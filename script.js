@@ -24,7 +24,7 @@ $(document).ready(function () {
         var ampm = "am";
 
         // Determine suffix based on hour of work day for 12 hour display
-        if (i <= 13) {
+        if (i <= 11) {
             ampm = "am"
         } else ampm = "pm";
 
@@ -53,7 +53,7 @@ $(document).ready(function () {
         }
 
         // Color the rows dpending on system clock time
-        // NOTE, if this is runoutside business hours, all hours will be grey!!
+        // NOTE, if this is run outside business hours, all hours will be grey!!
         if (i < parseInt(currentTime)) {
             row.css("background-color", "lightgrey"); // Past
         } else if (i = parseInt(currentTime)) {
@@ -68,19 +68,26 @@ $(document).ready(function () {
             // Get event details
             var eventDetails = prompt("Please enter event details");
 
-            // Set what the text for Row will be
-            var textToSet = $(this).attr("display") + " : " + eventDetails;
-            console.log(textToSet);
+            // Check to see if eventDetails actually has a value
+            if (eventDetails) {
 
-            // Refresh row with it's new Text
-            $(this).text(textToSet);
+                // Set what the text for Row will be
+                var textToSet = $(this).attr("display") + " : " + eventDetails;
+                console.log(textToSet);
 
-            // Assign element of Array to be equal to the text that Row will display 
+                // Refresh row with it's new Text
+                $(this).text(textToSet);
+
+            } else {
+                // If eventDetails has nothing, then revert to row's default display
+                $(this).text($(this).attr('display'));
+            }
+
+            // Always assign element of Array to be equal to the text that Row will display 
             dailyPlanArray[parseInt($(this).attr("hour-index"))] = textToSet;
 
-            // Update Local Storage, use Stringify to convert array to text
+            // Always update Local Storage, use Stringify to convert array to text
             localStorage.setItem("storedArray", JSON.stringify(dailyPlanArray));
-
         });
 
         // Append to HTML object #plannerContainer
